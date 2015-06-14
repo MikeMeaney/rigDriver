@@ -86,11 +86,12 @@ public void draw(){
 							sendToServer(serverURL,"/status", "state=complete");
 							
 							//Send the data to the server
-							String theData = "rig=Ernest&durration="+elapsedBuffer+"&in="+inBuffer;
+							String theData = "rig=Ernest&durration="+elapsedBuffer+"&inTime="+inBuffer;
 							sendToServer(serverURL, "/data", theData);
+							delay(10);
+							sendToServer(serverURL, "/status", "state=waiting"); 
 							break;
 					}
-	
 			}
 
 		}
