@@ -1,7 +1,9 @@
-/** Rig Driver 
-	 send data to http:
+/* Rig Client Driver
+UART Integration written by Jason VM Herbert
+and Web Integration written by Mike Meaney,
+in San Diego, CA (2015)
 
-	 */ 
+*/ 
 
 import processing.serial.*;
 import processing.net.*;
@@ -37,7 +39,6 @@ void draw(){
 							println(elapsedBuffer);	
 							myServer.write (elapsedBuffer);
 							break;
-
 					}
 
 				
