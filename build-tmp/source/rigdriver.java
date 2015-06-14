@@ -15,12 +15,14 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-public class rigdriver extends PApplet {
+public class rigDriver extends PApplet {
 
-/** Rig Driver 
-	 send data to http:
+/* Rig Client Driver
+UART Integration written by Jason VM Herbert
+and Web Integration written by Mike Meaney,
+in San Diego, CA (2015)
 
-	 */ 
+*/ 
 
 
 
@@ -56,7 +58,6 @@ public void draw(){
 							println(elapsedBuffer);	
 							myServer.write (elapsedBuffer);
 							break;
-
 					}
 
 				
@@ -68,7 +69,7 @@ public void draw(){
 
 	}
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "rigdriver" };
+    String[] appletArgs = new String[] { "rigDriver" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {

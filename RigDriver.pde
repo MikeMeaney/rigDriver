@@ -6,16 +6,12 @@ in San Diego, CA (2015)
 */ 
 
 import processing.serial.*;
-import processing.net.*;
 Serial myPort; // Create object from Serial port 
 int val; //Data recevied from the Serial port being declared 
-Server myServer;
-int port = 5204;
 void setup(){ 
 	println(Serial.list());  // List avaliable serial ports 
 	myPort = new Serial(this,Serial.list()[2], 115200); // List Serial Port 2 as port being used 
 	// open port, set baud rate to 115200 
-	myServer=  new Server (this,port);
 	}
 void draw(){
 	if (myPort.available() >0) {   // If open Serial port is reading data greater than 0 bytes 
