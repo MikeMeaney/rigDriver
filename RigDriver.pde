@@ -33,7 +33,6 @@ void draw(){
 					if (myPort.available()>0) { //
 							String elapsedBuffer = myPort.readString();
 							println(elapsedBuffer);	
-							myServer.write (elapsedBuffer);
 							break;
 					}
 
