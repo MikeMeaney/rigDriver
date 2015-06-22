@@ -5,6 +5,7 @@ import processing.opengl.*;
 
 import processing.serial.*; 
 import http.requests.*; 
+import java.util.Date; 
 
 import java.util.HashMap; 
 import java.util.ArrayList; 
@@ -22,17 +23,25 @@ UART Integration written by Jason VM Herbert
 and Web Integration written by Mike Meaney,
 in San Diego, CA (2015)
 
+
+//6.21.15 Rev. 
+	-Identify to server the ID of the RIG 
+		-Will require a hard-coded ID in the EEPROM of the Arduino
+
 */ 
+
 
 
 
 
 float derpNumber = 0;
 String serverURL = "http://localhost:3000";
+String RIG_NAME = "Ernest"; 
+String RIG_NAME_Q = "rig="+RIG_NAME;
 
 //For the data
 String inBuffer;
-String outBuffer;
+long IN = 0;
 String elapsedBuffer;
 
 
@@ -49,47 +58,45 @@ public void setup(){
   	GetRequest get = new GetRequest(serverURL);
   	get.send(); // program will wait untill the request is completed
   	println("Server Response: " + get.getContent());
-
 	}
 
 
 
 public void draw(){
+	background(0, 155, 155);
 	if (myPort.available() >0) {   // If open Serial port is reading data greater than 0 bytes 
 			int inByte = myPort.read(); // Read byres in Serial port 
 			// println(inByte);
 			switch (inByte) {       // Switch statement of Calibration
 				case '[' :
 					println("CalStart");
-					sendToServer(serverURL,"/status","state=calibrating");
+					sendToServer(serverURL,"/status","state=Calibrating&"+RIG_NAME_Q);
 					break;
 				case ']' :
 					println("CalEnded"); 
-					sendToServer(serverURL, "/status", "state=waiting"); 
+					sendToServer(serverURL, "/status", "state=Waiting&"+RIG_NAME_Q); 
 					break;
 				case '\0' :
 					println("Hand Inserted"); //When Arduino sends "\0" to being counting seconds passed
-					sendToServer(serverURL, "/status", "state=testing"); 
-					if (myPort.available()>0) { //
-							inBuffer = myPort.readString();
-							inBuffer = trim(inBuffer); //remove white space
-							println("In buffer is: " + inBuffer);	
-							break;
-					}
-
+					sendToServer(serverURL, "/status", "state=Testing&"+RIG_NAME_Q); 
+					Date in = new Date();
+					IN = in.getTime();
+					elapsedBuffer = "";
 					break;
 				case '\t':
 					println("Hand Removed"); // When Arduino send "\t" stop counting, and 
 					if (myPort.available()>0) { //
 							elapsedBuffer = myPort.readString();
-							println(elapsedBuffer);	
+							println("The Fucking buffer:" +trim(elapsedBuffer));	
 							sendToServer(serverURL,"/status", "state=complete");
 							
+							Date out = new Date();
 							//Send the data to the server
-							String theData = "rig=Ernest&durration="+elapsedBuffer+"&inTime="+inBuffer;
+							String theData = RIG_NAME_Q+"&durration="+elapsedBuffer+"&inTime="+IN+"&outTime="+out.getTime();
+							//println("The fucking data query:" + theData);
 							sendToServer(serverURL, "/data", theData);
-							delay(10);
-							sendToServer(serverURL, "/status", "state=waiting"); 
+							delay(500);
+							sendToServer(serverURL, "/status", RIG_NAME_Q+"&state=Waiting"); 
 							break;
 					}
 			}
@@ -100,8 +107,15 @@ public void draw(){
 public void sendToServer(String url,String route, String query){
 	GetRequest theRequest = new GetRequest(url+route+"?"+query);
 	theRequest.send();
+	println("--------------------------------------");
+	println(theRequest.getContent());
+//	println(theRequest.getHeader("Content-Length"));
+
+	println("--------------------------------------");
 	println(query + " sent to server");
+	//delay(1000);
 }
+
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "rigDriver" };
     if (passedArgs != null) {
