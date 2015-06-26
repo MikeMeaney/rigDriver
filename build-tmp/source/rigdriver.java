@@ -35,8 +35,8 @@ in San Diego, CA (2015)
 
 
 float derpNumber = 0;
-String serverURL = "http://localhost:3000";
-String RIG_NAME = "Ernest"; 
+String serverURL = "http://rigley-meaneymiked.rhcloud.com";
+String RIG_NAME = "Flannery"; 
 String RIG_NAME_Q = "rig="+RIG_NAME;
 
 //For the data

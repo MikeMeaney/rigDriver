@@ -16,7 +16,7 @@ import java.util.Date;
 
 float derpNumber = 0;
 String serverURL = "http://rigley-meaneymiked.rhcloud.com";
-String RIG_NAME = "Ernest"; 
+String RIG_NAME = "Flannery"; 
 String RIG_NAME_Q = "rig="+RIG_NAME;
 
 //For the data
