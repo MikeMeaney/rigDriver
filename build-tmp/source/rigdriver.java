@@ -96,6 +96,8 @@ public void draw(){
 							//println("The fucking data query:" + theData);
 							sendToServer(serverURL, "/data", theData);
 							delay(500);
+							sendToServer(serverURL, "/status", RIG_NAME_Q+"&state=Done");
+							delay(2000);
 							sendToServer(serverURL, "/status", RIG_NAME_Q+"&state=Waiting"); 
 							break;
 					}
