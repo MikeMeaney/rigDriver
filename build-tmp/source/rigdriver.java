@@ -95,10 +95,18 @@ public void draw(){
 							String theData = RIG_NAME_Q+"&durration="+elapsedBuffer+"&inTime="+IN+"&outTime="+out.getTime();
 							//println("The fucking data query:" + theData);
 							sendToServer(serverURL, "/data", theData);
-							delay(500);
-							sendToServer(serverURL, "/status", RIG_NAME_Q+"&state=Done");
-							delay(2000);
+							delay(100); //Chill for a bit before sending the next request
+							long m = millis();
+							//send a Done flag when test completes and hold on it for a little while
+							
+							//sendToServer(serverURL, "/status", RIG_NAME_Q+"&state=Done"); 
+							println("----- " + m);
+							while(millis() < m+3000){	
+								println("millis: "+ millis()+ " | m+3000: " + (m+3000));
+								sendToServer(serverURL, "/status", RIG_NAME_Q+"&state=Done"); 
+							}
 							sendToServer(serverURL, "/status", RIG_NAME_Q+"&state=Waiting"); 
+
 							break;
 					}
 			}
