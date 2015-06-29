@@ -28,6 +28,7 @@ String elapsedBuffer;
 Serial myPort; // Create object from Serial port 
 int val; //Data recevied from the Serial port being declared 
 void setup(){ 
+	size(300,200);
 	println("----The Serial Ports are as follows------");
 	println(Serial.list());  // List avaliable serial ports 
 	println("Configuring port: " + Serial.list()[2] + " This should start with \"/dev/tty/usbmodem\" on a Mac at least :/ ");
@@ -84,6 +85,7 @@ void draw(){
 							while(millis() < m+3000){	
 								println("millis: "+ millis()+ " | m+3000: " + (m+3000));
 								sendToServer(serverURL, "/status", RIG_NAME_Q+"&state=Done"); 
+								delay(100);
 							}
 							sendToServer(serverURL, "/status", RIG_NAME_Q+"&state=Waiting"); 
 
